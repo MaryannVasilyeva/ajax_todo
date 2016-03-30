@@ -50,4 +50,38 @@ $(document).ready(function(){
 		});
 
 	});
+
+	$(document).on('change', '#task_list input', function(){
+		var input = $(this);
+		var url = '/tasks/' + input.attr('id');
+
+		$.ajax({
+			url: url,
+			type: 'PUT',
+			data: { complete: input.is(':checked') }
+		}).done(function(data){
+			console.log('updated');
+		}).fail(function(msg){
+			alert('Something when wrong');
+			input.attr('checked', !input.is(':checked'));
+		})
+	});
+
+	$(document).on('click', '.remove-task', function(){
+		var url = '/tasks/' + $(this).data('id');
+
+		$.ajax({
+			url: url,
+			type: 'DELETE',
+			dataType: 'JSON'
+		}).done(function(data){
+			getAllTasks();
+		}).fail(function(msg){
+			console.log(msg);
+		});
+	});
 });
+
+
+
+

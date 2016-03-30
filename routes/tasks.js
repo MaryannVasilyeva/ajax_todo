@@ -24,4 +24,20 @@ router.post('/task_template', function(req, res){
 	res.render('task', {id: task.id, title: task.title, complete: task.complete})
 });
 
+//PUT the task and updates using the id
+router.put('/:id', function(req, res){
+	Task.findByIdAndUpdate(
+		req.params.id,
+		{ $set: { complete: req.body.complete}},
+		function(err, task){
+			res.send(task);
+		});
+});
+
+router.delete('/:id', function(req,res){
+	Task.findById(req.params.id, function(err, task){
+		task.remove();
+		res.status(200).send({success: true});
+	});
+})
 module.exports = router;
